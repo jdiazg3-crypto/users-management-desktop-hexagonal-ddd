@@ -15,6 +15,7 @@ public enum MenuOption {
   DELETE_USER(5, "Delete user"),
   LOGIN(6, "Login"),
   RESIDENCIAS(7, "Gestion de Residencias"),
+  MUNICIPIOS(8, "Gestion de Municipios"),
   EXIT(0, "Exit");
 
   private final int number;
