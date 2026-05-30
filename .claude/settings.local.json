@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where mysql.exe)",
+      "Read(//c/Program Files/MySQL/**)",
+      "Read(//c/xampp/mysql/bin/**)",
+      "Read(//c/laragon/bin/**)",
+      "Read(//c/wamp64/bin/**)",
+      "Bash(\"/c/Program Files/MySQL/MySQL Server 8.0/bin/mysql.exe\" -uroot -pSebas2101! -h localhost -P 3306 -e \"USE 7502510010_9_censo; SHOW TABLES LIKE 'users'; DESCRIBE persona; SELECT COUNT\\(*\\) AS personas FROM persona; SELECT COUNT\\(*\\) AS municipios FROM municipio; SELECT COUNT\\(*\\) AS residencias FROM residencia;\")",
+      "Bash(git rm *)",
+      "Bash(rm -f \"src/main/java/com/jcaa/usersmanagement/domain/valueobject/ResidenciaEventHandlers.txt\")",
+      "Bash(git restore *)",
+      "Bash(git add *)",
+      "Bash(mvn -q compile)",
+      "Bash(GIT_AUTHOR_DATE=2026-05-28T19:00:00-05:00 GIT_COMMITTER_DATE=2026-05-28T19:00:00-05:00 git commit -m 'feat\\(residencia\\): agregar value objects y excepciones de dominio *)",
+      "Bash(git fetch *)",
+      "Bash(git checkout *)",
+      "Bash(git pull *)"
+    ]
+  }
+}
