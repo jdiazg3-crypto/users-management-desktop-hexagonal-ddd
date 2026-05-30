@@ -12,6 +12,7 @@ target/
 *.iml
 *.ipr
 
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -39,4 +40,7 @@ build/
 
 .idea/
 *.log
-
+.claude/
+git add .gitignore
+git commit -m "chore: add .claude to gitignore"
+git push origin feature/crudl-municipio
