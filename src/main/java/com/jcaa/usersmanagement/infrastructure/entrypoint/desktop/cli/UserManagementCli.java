@@ -10,6 +10,7 @@ import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.cli.handler.Up
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.cli.io.ConsoleIO;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.cli.io.UserResponsePrinter;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.cli.menu.MenuOption;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.MunicipioController;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.ResidenciaController;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.UserController;
 import jakarta.validation.ConstraintViolationException;
@@ -30,6 +31,7 @@ public final class UserManagementCli {
 
   private final UserController userController;
   private final ResidenciaController residenciaController;
+  private final MunicipioController municipioController;
   private final ConsoleIO console;
 
   public void start() {
@@ -52,6 +54,8 @@ public final class UserManagementCli {
         running = false;
       } else if (option.get() == MenuOption.RESIDENCIAS) {
         new ResidenciaCli(residenciaController, console).start();
+      } else if (option.get() == MenuOption.MUNICIPIOS) {
+        new MunicipioCli(municipioController, console).start();
       } else {
         executeHandler(handlers, option.get());
       }

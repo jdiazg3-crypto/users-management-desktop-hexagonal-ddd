@@ -18,6 +18,7 @@ public final class Main {
       new UserManagementCli(
               container.userController(),
               container.residenciaController(),
+              container.municipioController(),
               new ConsoleIO(scanner, System.out)
       ).start();
     }

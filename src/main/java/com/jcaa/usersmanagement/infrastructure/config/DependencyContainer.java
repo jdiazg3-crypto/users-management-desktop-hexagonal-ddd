@@ -1,37 +1,48 @@
 package com.jcaa.usersmanagement.infrastructure.config;
 
+import com.jcaa.usersmanagement.application.port.in.CreateMunicipioUseCase;
 import com.jcaa.usersmanagement.application.port.in.CreateResidenciaUseCase;
 import com.jcaa.usersmanagement.application.port.in.CreateUserUseCase;
+import com.jcaa.usersmanagement.application.port.in.DeleteMunicipioUseCase;
 import com.jcaa.usersmanagement.application.port.in.DeleteResidenciaUseCase;
 import com.jcaa.usersmanagement.application.port.in.DeleteUserUseCase;
+import com.jcaa.usersmanagement.application.port.in.GetAllMunicipiosUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetAllResidenciasUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetAllUsersUseCase;
+import com.jcaa.usersmanagement.application.port.in.GetMunicipioByIdUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetResidenciaByIdUseCase;
 import com.jcaa.usersmanagement.application.port.in.GetUserByIdUseCase;
 import com.jcaa.usersmanagement.application.port.in.LoginUseCase;
+import com.jcaa.usersmanagement.application.port.in.UpdateMunicipioUseCase;
 import com.jcaa.usersmanagement.application.port.in.UpdateResidenciaUseCase;
 import com.jcaa.usersmanagement.application.port.in.UpdateUserUseCase;
+import com.jcaa.usersmanagement.application.service.CreateMunicipioService;
 import com.jcaa.usersmanagement.application.service.CreateResidenciaService;
 import com.jcaa.usersmanagement.application.service.CreateUserService;
+import com.jcaa.usersmanagement.application.service.DeleteMunicipioService;
 import com.jcaa.usersmanagement.application.service.DeleteResidenciaService;
 import com.jcaa.usersmanagement.application.service.DeleteUserService;
 import com.jcaa.usersmanagement.application.service.EmailNotificationService;
+import com.jcaa.usersmanagement.application.service.GetAllMunicipiosService;
 import com.jcaa.usersmanagement.application.service.GetAllResidenciasService;
 import com.jcaa.usersmanagement.application.service.GetAllUsersService;
+import com.jcaa.usersmanagement.application.service.GetMunicipioByIdService;
 import com.jcaa.usersmanagement.application.service.GetResidenciaByIdService;
 import com.jcaa.usersmanagement.application.service.GetUserByIdService;
 import com.jcaa.usersmanagement.application.service.LoginService;
+import com.jcaa.usersmanagement.application.service.UpdateMunicipioService;
 import com.jcaa.usersmanagement.application.service.UpdateResidenciaService;
 import com.jcaa.usersmanagement.application.service.UpdateUserService;
 import com.jcaa.usersmanagement.infrastructure.adapter.email.JavaMailEmailSenderAdapter;
 import com.jcaa.usersmanagement.infrastructure.adapter.email.SmtpConfig;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.config.DatabaseConfig;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.config.DatabaseConnectionFactory;
+import com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.MunicipioRepositoryMySQL;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.ResidenciaRepositoryMySQL;
 import com.jcaa.usersmanagement.infrastructure.adapter.persistence.repository.UserRepositoryMySQL;
+import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.MunicipioController;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.ResidenciaController;
 import com.jcaa.usersmanagement.infrastructure.entrypoint.desktop.controller.UserController;
-
 import java.sql.Connection;
 import jakarta.validation.Validator;
 
@@ -52,6 +63,7 @@ public final class DependencyContainer {
 
   private final UserController userController;
   private final ResidenciaController residenciaController;
+  private final MunicipioController municipioController;
 
   public DependencyContainer() {
     final AppProperties properties = new AppProperties();
@@ -107,6 +119,28 @@ public final class DependencyContainer {
             deleteResidenciaUseCase,
             getResidenciaByIdUseCase,
             getAllResidenciasUseCase);
+
+    // Municipios
+    final MunicipioRepositoryMySQL municipioRepository =
+            new MunicipioRepositoryMySQL(connection);
+
+    final CreateMunicipioUseCase createMunicipioUseCase =
+            new CreateMunicipioService(municipioRepository, validator);
+    final UpdateMunicipioUseCase updateMunicipioUseCase =
+            new UpdateMunicipioService(municipioRepository, validator);
+    final DeleteMunicipioUseCase deleteMunicipioUseCase =
+            new DeleteMunicipioService(municipioRepository, validator);
+    final GetMunicipioByIdUseCase getMunicipioByIdUseCase =
+            new GetMunicipioByIdService(municipioRepository, validator);
+    final GetAllMunicipiosUseCase getAllMunicipiosUseCase =
+            new GetAllMunicipiosService(municipioRepository);
+
+    this.municipioController = new MunicipioController(
+            createMunicipioUseCase,
+            updateMunicipioUseCase,
+            deleteMunicipioUseCase,
+            getMunicipioByIdUseCase,
+            getAllMunicipiosUseCase);
   }
 
   public UserController userController() {
@@ -115,6 +149,10 @@ public final class DependencyContainer {
 
   public ResidenciaController residenciaController() {
     return residenciaController;
+  }
+
+  public MunicipioController municipioController() {
+    return municipioController;
   }
 
   private static Connection buildDatabaseConnection(final AppProperties properties) {
